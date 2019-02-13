@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moma.dao.mapper.BannerMapper">
+
+    <resultMap id="BannerBean" type="com.moma.dao.bean.Banner">
+        <id column="bid" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="create_time" property="create_time"></result>
+        <result column="delete_time" property="delete_time"></result>
+        <result column="update_tiem" property="update_tiem"></result>
+        <collection property="banner_item" ofType="com.moma.dao.bean.BannerItem">
+            <id column="biid" property="id"></id>
+            <result column="banner_id" property="banner_id"></result>
+            <result column="img_id" property="img_id"></result>
+            <result column="create_time" property="create_time"></result>
+            <result column="delete_time" property="delete_time"></result>
+            <result column="update_time" property="update_time"></result>
+            <association property="image" javaType="com.moma.dao.bean.Image">
+                <id column="imgid" property="id"></id>
+                <result column="url" property="url"></result>
+                <result column="create_time" property="create_time"></result>
+                <result column="delete_time" property="delete_time"></result>
+                <result column="update_time" property="update_time"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <!-- 这里比较易懂 -->
+    <select id="getBannerAll" parameterType="java.lang.Integer" resultMap="BannerBean">
+    SELECT *,b.id AS bid,bi.id AS biid,img.id AS imgid
+    FROM banner b,banner_item bi,image img
+    WHERE b.id=bi.banner_id
+    AND bi.img_id=img.id
+    AND b.id=#{id,jdbcType=INTEGER}
+  </select>
+
+</mapper>
