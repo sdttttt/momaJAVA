@@ -22,6 +22,7 @@ public class BannerController{
 
     @Resource
     BannerService bannerService;
+
     @GetMapping("/banner/{id}")
     public Banner getBannerAll(@PathVariable("id") Integer id) throws BannerNotFountException {
         Banner result = bannerService.getBannerAll(id);

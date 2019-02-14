@@ -3,18 +3,16 @@ spring:
     password: root
     username: root
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://192.168.0.102/moma
+    url: jdbc:mysql://192.168.0.107/moma
   http:
     encoding:
       charset: UTF-8
       force: true
       enabled: true
   redis:
-    host: 192.168.0.102
+    host: 192.168.0.107
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
-    #下划线转驼峰
-    map-underscore-to-camel-case: true
     aggressive-lazy-loading: true

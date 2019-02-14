@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moma.dao.mapper.ThemeMapper">
+
+    <resultMap id="ThemeBean" type="com.moma.dao.bean.Theme">
+        <id column="tid" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="create_time" property="create_time"></result>
+        <result column="delete_time" property="delete_time"></result>
+        <result column="update_time" property="update_time"></result>
+        <collection property="theme_item" ofType="com.moma.dao.bean.ThemeItem">
+            <id column="tiid" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="ename" property="ename"></result>
+            <result column="theme_id" property="theme_id"></result>
+            <result column="img_id" property="img_id"></result>
+            <result column="create_time" property="create_time"></result>
+            <result column="delete_time" property="delete_time"></result>
+            <result column="update_time" property="update_time"></result>
+            <association property="image" javaType="com.moma.dao.bean.Image">
+                <id column="imgid" property="id"></id>
+                <result column="url" property="url"></result>
+                <result column="create_time" property="create_time"></result>
+                <result column="delete_time" property="delete_time"></result>
+                <result column="update_time" property="update_time"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="getThemeAll" parameterType="java.lang.Integer" resultMap="ThemeBean">
+        SELECT *,t.id AS tid,ti.id AS tiid,img.id AS imgid FROM theme t
+        INNER JOIN theme_item ti ON t.id=ti.theme_id
+        INNER JOIN image img ON ti.img_id = img.id
+        WHERE t.id = #{id,jdbcType=INTEGER}
+    </select>
+</mapper>

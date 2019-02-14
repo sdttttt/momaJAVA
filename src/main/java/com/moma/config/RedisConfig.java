@@ -33,22 +33,23 @@ public class RedisConfig {
     }
 
     //@Primary //若配置多个缓存管理器需要有一个默认的缓存管理器
-    @Bean
+    @Bean(name = "jsonSerializer")
     public RedisCacheManager myCacheManager(RedisConnectionFactory redisConnectionFactory){
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         //.entryTtl(Duration.ofHours(1)); // 设置缓存有效期一小时
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
 
         ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+ //       om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(om);
 
         // 配置序列化（解决乱码的问题）
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
-                .disableCachingNullValues();
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer));
+               // Cache不允许为空值 .disableCachingNullValues();
+
 
         RedisCacheManager cacheManager = RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(config)

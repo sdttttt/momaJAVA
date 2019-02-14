@@ -18,6 +18,16 @@ public class ThemeItem {
 
     private String update_time;
 
+    private Image image;
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
     public Integer getId() {
         return id;
     }
