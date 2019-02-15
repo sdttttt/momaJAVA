@@ -1,6 +1,7 @@
 package com.moma.dao.bean;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class User {
     private Integer id;
@@ -11,11 +12,11 @@ public class User {
 
     private String name;
 
-    private String create_time;
+    private Date create_time;
 
-    private String update_time;
+    private Date update_time;
 
-    private String delete_time;
+    private Date delete_time;
 
     public Integer getId() {
         return id;
@@ -49,27 +50,28 @@ public class User {
         this.name = name;
     }
 
-    public String getCreate_time() {
+    public Date getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(Date create_time) {
         this.create_time = create_time;
     }
 
-    public String getUpdate_time() {
+    public Date getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(String update_time) {
+    public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
 
-    public String getDelete_time() {
+    public Date getDelete_time() {
         return delete_time;
     }
 
-    public void setDelete_time(String delete_time) {
+    public void setDelete_time(Date delete_time) {
         this.delete_time = delete_time;
     }
 }
+

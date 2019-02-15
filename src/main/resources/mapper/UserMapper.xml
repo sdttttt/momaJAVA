@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moma.dao.mapper.UserMapper">
+
+    <select id="userByOpenid" parameterType="java.lang.String" resultType="com.moma.dao.bean.User">
+      SELECT * FROM user WHERE openid = #{openid}
+    </select>
+
+    <insert id="makeUser" parameterType="com.moma.dao.bean.User">
+        INSERT INTO user VALUES(NULL,#{openid},0,NULL,#{create_time},NULL,NULL)
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+    </insert>
+
+</mapper>

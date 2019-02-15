@@ -1,15 +1,18 @@
 package com.moma.service.impl;
 
+import com.moma.Tools.Tools;
 import com.moma.config.WeChatConfig;
-import com.moma.exception.ExceptionEnum;
+import com.moma.dao.bean.User;
+import com.moma.dao.mapper.UserMapper;
+import com.moma.exception.UidNotException;
 import com.moma.exception.WxServiceErrorException;
 import com.moma.service.TokenService;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,23 +31,46 @@ import java.util.Map;
 public class TokenServiceImpl implements TokenService {
 
     @Resource
+    UserMapper userMapper;
+
+    @Resource
     RestTemplate restTemplate;
 
     @Resource
     WeChatConfig weChatConfig;
 
+    @Resource
+    RedisTemplate jsonRedisTemplate;
+
     @Override
     public Map<String,Object> getToken(String code) {
         Map<String,Object> map = sendGetOpenid(code);
-        if(map.containsKey("errmsg") || map.containsKey("errcode")){
+        if(map.containsKey("errmsg") || map.containsKey("errcode"))
             throw new WxServiceErrorException();
-        }
 
-        return map;
+        String openid  = (String) map.get("openid");
+        User user = userMapper.userByOpenid(openid);
+        Integer uid;
+        //BUG 修正
+        //user.getOpenid == null
+        //这种写法是错误的 既然user已经是空 何来getOpenid 之说？
+        if(user == null)
+           uid = createUserByOpenid(openid);
+        else
+            uid = user.getId();
+
+        if(uid == 0)
+            throw new UidNotException();
+
+        String token = saveCache(openid,uid);
+        Map<String,Object> tokenMap = new HashMap<>();
+        tokenMap.put("token",token);
+
+        return tokenMap;
     }
 
     //辅助getToken API
-    public Map<String,Object> sendGetOpenid(String code){
+    private Map<String,Object> sendGetOpenid(String code){
         //组装URL
         String loginUrl = String.format(weChatConfig.getLoginUrl(),weChatConfig.getAppid(),weChatConfig.getAppsecret(),code);
         //测试用
@@ -57,4 +83,43 @@ public class TokenServiceImpl implements TokenService {
         return map;
     }
 
+    //辅助getToken API
+    private Integer createUserByOpenid(String openid){
+        User user = new User();
+        user.setOpenid(openid);
+        user.setCreate_time(new Date());
+        user.setUpdate_time(new Date());
+
+        try {
+         userMapper.makeUser(user);
+         return user.getId();
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    //辅助getToken API
+    private String saveCache(String openid,Integer uid){
+        String token = Tools.randChar();
+        Map<String,Object> cache = new HashMap<String,Object>();
+        cache.put("openid",openid);
+        cache.put("uid",uid);
+        //Redis 缓存
+        try{
+            jsonRedisTemplate.opsForValue().set(token,cache,1000);
+        }catch (Exception e){
+            throw e;
+        }
+        return token;
+    }
+
+    @Override
+    public Map<String, Object> checkToken(String token) {
+        Boolean check = jsonRedisTemplate.hasKey(token);
+
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("verify",check);
+
+        return map;
+    }
 }

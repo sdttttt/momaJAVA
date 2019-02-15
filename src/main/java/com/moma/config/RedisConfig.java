@@ -23,13 +23,39 @@ import java.net.UnknownHostException;
 @Configuration
 public class RedisConfig {
 
-    @Bean
+    //专用Bean
+
     public RedisTemplate<Object, Banner> bannerRedisTemplate(
             RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
         RedisTemplate<Object, Banner> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
-        template.setDefaultSerializer(new Jackson2JsonRedisSerializer<Banner>(Banner.class));
+        template.setDefaultSerializer(new Jackson2JsonRedisSerializer(Banner.class));
         return template;
+    }
+
+    //json 映射转化器
+    //2019-2-16 已经完善 可用
+    //bean map 无影不求
+    @Bean
+    public RedisTemplate<String,Object> jsonRedisTemplate(RedisConnectionFactory redisConnectionFactory){
+        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+
+        Jackson2JsonRedisSerializer serializer = new Jackson2JsonRedisSerializer(Object.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL,JsonAutoDetect.Visibility.ANY);
+        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        serializer.setObjectMapper(mapper);
+
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(serializer);
+
+        redisTemplate.setHashValueSerializer(serializer);
+
+        redisTemplate.afterPropertiesSet();
+
+        return redisTemplate;
     }
 
     //@Primary //若配置多个缓存管理器需要有一个默认的缓存管理器

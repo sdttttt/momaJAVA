@@ -19,7 +19,7 @@ public class RequestConfig {
     @Bean
     public ClientHttpRequestFactory httpRequestFactory(){
         SimpleClientHttpRequestFactory httpRequestFactory = new SimpleClientHttpRequestFactory();
-
+        httpRequestFactory.setConnectTimeout(50000);
         return httpRequestFactory;
     }
 
