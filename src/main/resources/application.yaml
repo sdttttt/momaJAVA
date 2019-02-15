@@ -16,3 +16,10 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     aggressive-lazy-loading: true
+
+
+wechat:
+  appid: wxedcd71ddcc04678b
+  login-url: https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code
+  app-secret: de6a35eaa96cbae7f3cf28b67418045e
+#debug: true

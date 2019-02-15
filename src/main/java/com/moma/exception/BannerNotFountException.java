@@ -1,15 +1,8 @@
 package com.moma.exception;
 
-public class BannerNotFountException extends RuntimeException {
+public class BannerNotFountException extends BaseException {
 
-    private Integer err_code;
-
-    public BannerNotFountException(ExceptionEnum exceptionEnum){
-        super(exceptionEnum.getMessage());
-        this.err_code = exceptionEnum.getErr_code();
-    }
-
-    public Integer getErr_code() {
-        return err_code;
+    public BannerNotFountException(){
+        super(ExceptionEnum.BANNER_NOT_FOUNT);
     }
 }
