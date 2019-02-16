@@ -6,7 +6,9 @@ import com.moma.dao.bean.User;
 import com.moma.dao.mapper.UserMapper;
 import com.moma.exception.UidNotException;
 import com.moma.exception.WxServiceErrorException;
+import com.moma.power.PowerEnum;
 import com.moma.service.TokenService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 /*
@@ -25,8 +28,9 @@ import java.util.Map;
  * 返回请求的处理直接使用JSONObject我发现回返回值为空
  * 我使用了兼容性比较好的Object超类，来解决这个问题
  * 最后将Object强转为HashMap可以返回json数据
+ * 这个Object不能转成JSONObject
+ * 这个JSONObject就是个垃圾（撕心裂肺）
  * */
-
 @Service
 public class TokenServiceImpl implements TokenService {
 
@@ -104,9 +108,11 @@ public class TokenServiceImpl implements TokenService {
         Map<String,Object> cache = new HashMap<String,Object>();
         cache.put("openid",openid);
         cache.put("uid",uid);
+        cache.put("power", PowerEnum.LEVEL_SON.getLevel());
         //Redis 缓存
         try{
-            jsonRedisTemplate.opsForValue().set(token,cache,1000);
+            jsonRedisTemplate.opsForValue()
+                    .set(token,cache,this.weChatConfig.getTokenLiveTime(), TimeUnit.SECONDS);
         }catch (Exception e){
             throw e;
         }

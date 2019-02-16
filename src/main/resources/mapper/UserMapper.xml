@@ -6,6 +6,10 @@
       SELECT * FROM user WHERE openid = #{openid}
     </select>
 
+    <select id="getWalletByOpenid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+      SELECT wallet FROM user WHERE openid = #{openid}
+    </select>
+
     <insert id="makeUser" parameterType="com.moma.dao.bean.User">
         INSERT INTO user VALUES(NULL,#{openid},0,NULL,#{create_time},NULL,NULL)
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">

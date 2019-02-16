@@ -5,7 +5,8 @@ public enum ExceptionEnum {
     THEME_NOT_FOUNT("theme找不到了",10002),
     WX_SERVICE_ERROR("微信内部错误，无法获取openid",00000),
     UID_NOT("uid居然没有，怎么会有这种事情",20001),
-    VERIFY_FOUND("验证结果消失了！",20002);
+    VERIFY_FOUND("验证结果消失了！",20002),
+    GET_USERINFO_FOUND("无法获取用户信息",20003);
 
     private String message;
     private Integer err_code;

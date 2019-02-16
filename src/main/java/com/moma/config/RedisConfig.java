@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moma.dao.bean.Banner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -23,8 +22,7 @@ import java.net.UnknownHostException;
 @Configuration
 public class RedisConfig {
 
-    //专用Bean
-
+    //专用Bean 演示用 已废弃
     public RedisTemplate<Object, Banner> bannerRedisTemplate(
             RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
         RedisTemplate<Object, Banner> template = new RedisTemplate<>();

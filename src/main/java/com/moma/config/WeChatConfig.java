@@ -17,6 +17,17 @@ public class WeChatConfig {
     @Value("${wechat.app-secret}")
     private String appsecret;
 
+    @Value("${wechat.token-live-time}")
+    private Integer tokenLiveTime;
+
+    public Integer getTokenLiveTime() {
+        return tokenLiveTime;
+    }
+
+    public void setTokenLiveTime(Integer tokenLiveTime) {
+        this.tokenLiveTime = tokenLiveTime;
+    }
+
     public String getAppid() {
         return appid;
     }

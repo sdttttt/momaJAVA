@@ -5,6 +5,7 @@ import com.moma.dao.bean.Banner;
 import com.moma.dao.bean.User;
 import com.moma.dao.mapper.UserMapper;
 import com.moma.service.ThemeService;
+import com.moma.service.UserService;
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ public class MomaApplicationTests {
 
 //    @Resource(type = BannerService.class)
 //    BannerService bannerService;
+/*
 
     @Resource
     RedisTemplate jsonRedisTemplate;
@@ -42,6 +44,10 @@ public class MomaApplicationTests {
 
     @Resource
     UserMapper userMapper;
+*/
+
+    @Resource
+    UserService userService;
 
 
     @Test
@@ -73,9 +79,13 @@ public class MomaApplicationTests {
 //        Banner banner = new Banner();
 //        banner.setId(1);
 //        banner.setName("awdaw");
-        Banner banner = (Banner) jsonRedisTemplate.opsForValue().get("banner");
-        System.out.println(banner.getName());
+//        Banner banner = (Banner) jsonRedisTemplate.opsForValue().get("banner");
+//        System.out.println(banner.getName());
         // System.out.println(.toString());
+
+        System.out.println(userService.getMyWallet("awdawd"));
+
+
     }
 
 }
