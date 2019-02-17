@@ -12,7 +12,7 @@ public class OnlyPrimaryCall implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequestWrapper wrapper = (HttpServletRequestWrapper) servletRequest;
+        HttpServletRequest wrapper = (HttpServletRequest) servletRequest;
         String token = wrapper.getHeader("token");
         if (token != null)
             filterChain.doFilter(servletRequest,servletResponse);

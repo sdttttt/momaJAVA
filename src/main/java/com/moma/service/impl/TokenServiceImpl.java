@@ -105,6 +105,7 @@ public class TokenServiceImpl implements TokenService {
     //辅助getToken API
     private String saveCache(String openid,Integer uid){
         String token = Tools.randChar();
+        //数据较少 不封装了
         Map<String,Object> cache = new HashMap<String,Object>();
         cache.put("openid",openid);
         cache.put("uid",uid);

@@ -88,5 +88,10 @@ public class MomaApplicationTests {
 
     }
 
+    @Test
+    public void fuckyou(){
+
+    }
+
 }
 

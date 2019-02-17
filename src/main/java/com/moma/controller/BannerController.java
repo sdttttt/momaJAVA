@@ -13,15 +13,6 @@ import java.io.Serializable;
 @RestController
 public class BannerController{
 
-/*
-*   2019-2-13
-*   我终究还是太嫩了，
-*   这个异常处理想了一个小时还是想不出有什么优雅的方式写
-*
-*   2019-2-15
-*   我终于想出了一种比较优雅的处理异常方式
-* */
-
     @Resource
     BannerService bannerService;
 
