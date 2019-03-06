@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moma.dao.mapper.CategoryMapper">
+
+    <resultMap id="CategoryBean" type="com.moma.dao.bean.Category">
+        <id column="cateid" property="id"></id>
+        <result column="name" property="name"></result>
+
+    </resultMap>
+
+    <select id="getProductAll" resultMap="CategoryBean">
+        SELECT *,cate.id AS cateid , pro.id AS proid , img.id AS imgid
+        FROM category cate
+        LEFT JOIN product pro ON cate.id = pro.category_id
+        LEFT JOIN image img ON pro.img_id = img.id
+    </select>
+
+</mapper>
