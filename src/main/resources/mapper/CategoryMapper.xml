@@ -5,7 +5,28 @@
     <resultMap id="CategoryBean" type="com.moma.dao.bean.Category">
         <id column="cateid" property="id"></id>
         <result column="name" property="name"></result>
-
+        <result column="img_id" property="img_id"></result>
+        <result column="create_time" property="create_time"></result>
+        <result column="delete_time" property="delete_time"></result>
+        <collection property="product" ofType="com.moma.dao.bean.Product">
+            <id column="proid" property="id"></id>
+            <result column="name" property="name"></result>
+            <result column="price" property="price"></result>
+            <result column="stock" property="stock"></result>
+            <result column="info" property="info"></result>
+            <result column="category_id" property="category_id"></result>
+            <result column="img_id" property="img_id"></result>
+            <result column="create_time" property="create_time"></result>
+            <result column="update_time" property="update_time"></result>
+            <result column="delete_time" property="delete_time"></result>
+            <association property="image" javaType="com.moma.dao.bean.Image">
+                <id column="imgid" property="id"></id>
+                <result column="url" property="url"></result>
+                <result column="create_time" property="create_time"></result>
+                <result column="delete_time" property="delete_time"></result>
+                <result column="update_time" property="update_time"></result>
+            </association>
+        </collection>
     </resultMap>
 
     <select id="getProductAll" resultMap="CategoryBean">
